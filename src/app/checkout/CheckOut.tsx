@@ -13,10 +13,12 @@ export default function CheckOut({cartId}:{cartId:string}) {
 
   const {register,handleSubmit} = useForm<formData>()
   async function handleCheckOut(data:formData){
-    const res= await onlinePayment(cartId,data)
-    console.log(res)
-  if (res === 'success') {
-  window.location.href = res.session.url
+  const res: any = await onlinePayment(cartId, data);
+
+console.log(res);
+
+if (res.status === 'success') {
+  window.location.href = res.session.url;
 }
   return (
     <div>
