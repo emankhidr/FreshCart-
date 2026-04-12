@@ -15,10 +15,9 @@ export default function CheckOut({cartId}:{cartId:string}) {
   async function handleCheckOut(data:formData){
     const res= await onlinePayment(cartId,data)
     console.log(res)
-    if(res.status==='success')
-      window.location.href= res.session.url
-
-  }
+  if (res === 'success') {
+  window.location.href = res.session.url
+}
   return (
     <div>
       <form className='w-1/2 mx-auto my-5' onSubmit={handleSubmit(handleCheckOut)}>
