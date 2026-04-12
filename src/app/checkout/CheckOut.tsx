@@ -28,4 +28,4 @@ export default function CheckOut({cartId}:{cartId:string}) {
       </form>
     </div>
   )
-}
+}}
