@@ -15,36 +15,30 @@ export const nextAuthConfig: NextAuthOptions =
                 email: {},
                 password: {}
             },
-            authorize: async (credentials) => {
+           authorize: async (credentials) => {
+  if (!credentials?.email || !credentials?.password) return null;
 
-                const data = await fetch(` ${process.env.API}auth/signin`,
-                    {
-                        method: 'post',
-                        body: JSON.stringify({
-                            email: credentials?.email,
-                            password: credentials?.password
-                        }),
-                        headers: {
-                            'content-type': 'application/json'
-                        }
-                    }
-                );
-                if (!data.ok) {
-                    throw new Error(data.statusText)
-                }
+  const res = await fetch(`${process.env.API}auth/signin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: credentials.email,
+      password: credentials.password,
+    }),
+  });
 
-                const payload = await data.json()
-                const { name, email } = payload.user
-                const tokenData = jwtDecode<{id:string}>(payload.token)
-                console.log('payload', payload)
-                // user when successful login 
-                return {
-                    id: tokenData.id,
-                    name,
-                    email,
-                    token : payload.token //backend
-                }
-            }
+  if (!res.ok) return null;
+
+  const payload = await res.json();
+
+  return {
+    id: String(payload.user.id),
+    name: payload.user.name,
+    email: payload.user.email,
+  } as any; // 👈 دي أهم نقطة لتفادي error
+}
         })
     ],
     callbacks:{
