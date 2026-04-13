@@ -18,8 +18,7 @@ export default  async function page({params}:{ params : Promise<{id:string}>}) {
      <div className='flex gap-3'>
         {/* {data.images.map(img=><Image src={img} alt="pic" key={img} width={50} height={50 }
         className='cursor-pointer'/>)} */}
-        <MySlider pageList={data.images} slidesPerView={2}/>
-     </div>
+<MySlider pageList={data.images} slidesPerView={2} showContent={false} />     </div>
      </div>
      <div className='md:w-2/3 w-full p-4'>
            <h5 className='font-light text-gray-500 my-2'>{data.category?.name}</h5>

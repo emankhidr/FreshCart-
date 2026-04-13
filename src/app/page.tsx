@@ -17,7 +17,7 @@ export default async function Home() {
   return (
   <div>
     {/* slider */}
-    <MySlider pageList={[slider1.src,slider2.src,slider3.src] } slidesPerView={1}/>
+    <MySlider pageList={[slider1.src,slider2.src,slider3.src] } slidesPerView={1} showContent={true}/>
     {/* feature */}
     <Features/>
     {/* categories */}
