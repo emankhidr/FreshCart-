@@ -1,19 +1,22 @@
 'use server'
+
 import { registerSchemaType } from "../Schema/register.schema";
 
+
 export async function registerFn(formData: registerSchemaType) {
-    const data = await fetch(`https://ecommerce.routemisr.com/api/v1/auth/signup`,
-        {
-            method: 'post',
-            body: JSON.stringify(formData),
-            headers: {
-                'content-type': 'application/json'
-            }
-        }
-    );
-    if (!data.ok) throw new Error(data?.statusText);
+  const res = await fetch("https://ecommerce.routemisr.com/api/v1/auth/signup", {
+    method: "POST",
+    body: JSON.stringify(formData),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
 
+  const data = await res.json();
 
-    return data.ok;
+  if (!res.ok) {
+    throw new Error(data.message || "Register failed");
+  }
 
+  return true;
 }

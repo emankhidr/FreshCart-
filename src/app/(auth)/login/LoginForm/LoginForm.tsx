@@ -1,107 +1,135 @@
-'use client'
-import { Button } from "@/components/ui/button"
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { Controller, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { Spinner } from "@/components/ui/spinner"
-import { loginSchema, loginSchemaType } from './Schema/LoginSchema';
-import { loginFn } from "./actions/Login.action"
-import { signIn } from "next-auth/react"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-export default function RegisterForm() {
+import { signIn } from "next-auth/react";
+import { FaFacebook, FaGoogle, FaHeadphones, FaLock, FaTruck } from "react-icons/fa";
+import Link from "next/link";
+import { loginSchema, loginSchemaType } from "./Schema/LoginSchema";
+
+export default function LoginForm() {
   const router = useRouter();
-  const [isLoading,setLoading] = useState(false)
- 
-  const { handleSubmit, control,reset } = useForm<loginSchemaType>({
+  const [isLoading, setLoading] = useState(false);
+  const { handleSubmit, control } = useForm<loginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-   
-      email: '',
-      password: '',
-    
-    }
-  })
-
+      
+      email: "",
+      password: "",
+      
+    },
+  });
   async function handleLogin(data: loginSchemaType) {
-    setLoading(true)
+    setLoading(true);
     try {
-      const isSucessfulRegister = await signIn('credentials',{
-        redirect:false, ...data
-      })
-
-      if (isSucessfulRegister?.ok ) {
-        toast.success('login successfully', {
-          position: 'top-right'
-        })
-
+     const isSuccessfulLogin = await signIn("credentials",{redirect:false,...data})
+      
+     
+      if (isSuccessfulLogin?.ok) {
+        toast.success("Logged in successfully", {
+          position: "top-right",
+        });
         setTimeout(() => {
-          router.push('/')
-        }, 500)
-        reset()
-      }
-      else{
-        toast.success('incorrect email or password', {
-          position: 'top-right'
-        })
-
+          router.push("/");
+        }, 500);
+      }else{
+        toast.success("incorrect email or password", {
+          position: "top-right",
+        });
       }
     } catch (error: any) {
       toast.error(error?.message, {
-        position: 'top-right'
-      })
-    }
-    finally{
-      setLoading(false)
+        position: "top-right",
+      });
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div>
-      <form className="w-2/3 mx-auto my-5" onSubmit={handleSubmit(handleLogin)}>
-        <FieldGroup>
-
-          
-
-          {/* email */}
-          <Controller
-            name="email"
-            control={control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="email">email</FieldLabel>
-                <Input {...field} id="email" type="email" aria-invalid={fieldState.invalid} placeholder="email" autoComplete="off" />
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
-
-          {/* password */}
-          <Controller
-            name="password"
-            control={control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="password">password</FieldLabel>
-                <Input {...field} id="password" type="password" aria-invalid={fieldState.invalid} placeholder="password" autoComplete="off" />
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
-          />
-
-         
-
-        </FieldGroup>
-
+    
+      <div className=" min-h-screen flex items-center justify-center">
        
-        <Button className="my-5">
-          {isLoading?<Spinner/>:'Login'}
-        </Button>
+          <div className="p-10">
+            
 
-      </form>
-    </div>
-  )
-} 
+            <form className="w-full" onSubmit={handleSubmit(handleLogin)}>
+              <FieldGroup>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="email">Email</FieldLabel>
+                      <Input
+                        {...field}
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        className="border border-gray-400"
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="flex justify-between items-center">
+                        <FieldLabel htmlFor="password">Password</FieldLabel>
+                      </div>
+
+                      <Input
+                        {...field}
+                        id="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        className="border border-gray-400"
+                      />
+
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              <Button className="w-full my-5 bg-green-600">
+                {isLoading ? <Spinner /> : "Sign In"}
+              </Button>
+            </form>
+
+            <p className="text-center text-sm text-gray-500 mt-5">
+              New to FreshCart?{" "}
+              <Link href="/register">
+                <span className="text-green-600 cursor-pointer">
+                  Create an account
+                </span>
+              </Link>
+            </p>
+
+           
+          </div>
+        </div>
+      </div>
+  );
+}
