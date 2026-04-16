@@ -12,16 +12,24 @@ export async function DELETE(
   }
 
   const res = await fetch(
-    `https://ecommerce.routemisr.com/api/v1/wishlist/${params.id}`,
+    `${process.env.API}wishlist/${params.id}`,
     {
       method: "DELETE",
       headers: {
-        token: token.token,
+        token: token.token as string,
+        "Content-Type": "application/json",
       },
     }
   );
 
   const data = await res.json();
+
+  if (!res.ok) {
+    return NextResponse.json(
+      { error: res.statusText },
+      { status: res.status }
+    );
+  }
 
   return NextResponse.json(data);
 }
