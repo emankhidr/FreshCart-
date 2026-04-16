@@ -1,7 +1,10 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const token = await getToken({ req });
 
   if (!token) {
@@ -9,8 +12,9 @@ export async function GET(req: NextRequest) {
   }
 
   const res = await fetch(
-    `https://ecommerce.routemisr.com/api/v1/wishlist`,
+    `https://ecommerce.routemisr.com/api/v1/wishlist/${params.id}`,
     {
+      method: "DELETE",
       headers: {
         token: token.token,
       },

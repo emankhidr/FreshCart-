@@ -1,9 +1,9 @@
-export async function getProductsBySubCategory(subId: string) {
+export async function getProducts() {
   const res = await fetch(
-    `https://ecommerce.routemisr.com/api/v1/products?subcategory=${subId}`
-  )
+    "https://ecommerce.routemisr.com/api/v1/products",
+    { cache: "no-store" }
+  );
 
-  const data = await res.json()
-
-  return data?.data || []
+  const data = await res.json();
+  return data?.data || [];
 }

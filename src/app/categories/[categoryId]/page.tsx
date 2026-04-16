@@ -1,29 +1,28 @@
-import { getSubCategories } from "@/src/apis/subcategories.api"
-import Link from "next/link"
+import { getSubCategories } from "@/src/apis/subcategories.api";
+import Link from "next/link";
 
 export default async function SubCategoriesPage({
   params,
 }: {
-  params: { categoryId: string }
+  params: { id: string };
 }) {
-  const subcategories = await getSubCategories(params.categoryId)
+  const data = await getSubCategories(params.id);
 
   return (
-    <div className="max-w-[1100px] mx-auto my-10">
-      <h2 className="mb-5 text-lg font-semibold">Sub Categories</h2>
+    <div>
+      <h2 className="my-5 font-bold">Sub Categories</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-        {subcategories.map((sub: any) => (
+        {data.map((sub: any) => (
           <Link
             key={sub._id}
-            href={`/categories/${params.categoryId}/${sub._id}`}
+            href={`/subproducts/${sub._id}`}
+            className="border p-4 rounded text-center hover:shadow"
           >
-            <div className="border p-4 text-center rounded-lg hover:shadow-md transition cursor-pointer">
-              <p>{sub.name}</p>
-            </div>
+            {sub.name}
           </Link>
         ))}
       </div>
     </div>
-  )
+  );
 }
