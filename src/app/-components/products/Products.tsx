@@ -10,8 +10,7 @@ export default async function Products() {
     <>
         <h2 className='my-5'>Featured <span className='text-green-500 underline'>Products</span></h2>
          <div className='grid xl:grid-cols-5 md:grid-cols-4 grid-cols-1 gap-5 py-10'>
-      {data?.map(prod=><ProductItem prod={prod} key={prod._id}/>)}
-    </div>
+{data?.map((prod: any) => <ProductItem prod={prod} key={prod._id}/>)}    </div>
 
     </>
    
