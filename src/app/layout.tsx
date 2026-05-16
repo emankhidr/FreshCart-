@@ -32,7 +32,7 @@ export default function RootLayout({
 
         {/*navbar */}
        
-        <div className="continer max-w-[1200px] mx-auto">
+        <div className="continer max-w-[1250px] mx-auto">
 
           <TanStackProviders>
              <WrapperCom>
